@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Monte sua Marmita</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <style>
+body {
+  background-color: #8C6E54;
+  color: #f4f4f4;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  min-height: 100vh;
+}
+
+
+.container {
+  background: #BFA288;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  margin-top: 80px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.5s ease;
+}
+
+.container h2 {
+  color: #402B1F;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  color: #402B1F;
+  font-size: 1.4rem;
+}
+
+select, input, textarea {
+  background: #402B1F;
+  color: #D9CCC5;
+  border: 1px solid #402B1F;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+select:focus, input:focus, textarea:focus {
+  border-color: #402B1F;
+  outline: none;
+}
+
+
+#marmitaOpcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#marmitaOpcoes div {
+  background: #D9CCC5;
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid #F2D0A7;
+  transition: all 0.3s ease;
+}
+
+#marmitaOpcoes div:hover {
+  border-color: #402B1F;
+  transform: translateY(-2px);
+}
+
+
+#marmitaValor {
+  background: #402B1F;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  color: #D9CCC5;
+  border: 1px solid #BFA288;
+  transition: all 0.3s ease;
+}
+
+#marmitaValor:hover {
+  border-color: #402B1F;
+}
+
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn.primary {
+  background: #402B1F;
+  color: #BFA288;
+}
+
+.btn.primary:hover {
+  background: #BFA288;
+  color: #402B1F;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid #402B1F;
+  color: #BFA288;
+}
+
+.btn.outline:hover {
+  background: #BFA288;
+  color: #402B1F;
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #402B1F;
+  border-radius: 10px;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width: 480px) {
+  .container {
+    padding: 25px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}
+</style>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h2>Monte sua Marmita</h2>
+    <form id="formMarmita">
+      <div class="field">
+        <label>Tamanho</label>
+        <select id="marmitaTamanho"></select>
+      </div>
+      <div id="marmitaOpcoes"></div>
+      <div id="marmitaValor" style="font-weight:600;margin-bottom:10px;">Valor: R$ 0,00</div>
+      <div class="form-actions">
+        <button type="submit" class="btn primary">Adicionar ao carrinho</button>
+        <a href="index.html" class="btn outline">Cancelar</a>
+      </div>
+    </form>
+  </main>
+  <script src="marmita.js"></script>
+</body>
+</html>

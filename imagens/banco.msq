@@ -1,0 +1,101 @@
+CREATE DATABASE sabores_tecnicos;
+USE sabores_tecnicos;
+
+
+-- TABELA USUARIOS
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    tipo ENUM('aluno', 'funcionario', 'admin') DEFAULT 'aluno',
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- TABELA CATEGORIAS
+
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+
+-- TABELA PRODUTOS (CARDÁPIO)
+
+CREATE TABLE produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL,
+    disponibilidade BOOLEAN DEFAULT TRUE,
+    categoria_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);
+
+
+-- TABELA ESTOQUE
+
+CREATE TABLE estoque (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    produto_id INT,
+    quantidade INT NOT NULL,
+    FOREIGN KEY (produto_id) REFERENCES produtos(id)
+);
+
+
+-- TABELA PEDIDOS
+
+CREATE TABLE pedidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pendente', 'preparando', 'pronto', 'cancelado') DEFAULT 'pendente',
+    valor_total DECIMAL(10,2),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+
+-- TABELA ITENS DO PEDIDO
+
+CREATE TABLE itens_pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT,
+    produto_id INT,
+    quantidade INT NOT NULL,
+    preco_unitario DECIMAL(10,2),
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
+    FOREIGN KEY (produto_id) REFERENCES produtos(id)
+);
+
+
+-- TABELA PAGAMENTOS
+
+CREATE TABLE pagamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT,
+    tipo ENUM('dinheiro', 'cartao', 'pix'),
+    status ENUM('pendente', 'pago', 'cancelado') DEFAULT 'pendente',
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
+);
+
+
+-- TABELA CARRINHO
+
+CREATE TABLE carrinho (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- ITENS DO CARRINHO
+
+CREATE TABLE itens_carrinho (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    carrinho_id INT,
+    produto_id INT,
+    quantidade INT,
+    FOREIGN KEY (carrinho_id) REFERENCES carrinho(id),
+    FOREIGN KEY (produto_id) REFERENCES produtos(id)
+);

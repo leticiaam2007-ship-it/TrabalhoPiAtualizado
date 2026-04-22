@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Painel Admin - Cantina</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Playwrite+DE+SAS:wght@100..400&family=Playwrite+ZA:wght@100..400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
+   
+body {
+  background-color: #8C6E54;
+  color: #8C6E54;
+  font-family: "Merriweather", serif;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+
+.topbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #402B1F; 
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 40px;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.topbar .btn {
+  background: #8C6E54;
+  color: #402B1F;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.topbar .btn:hover {
+  background: #BFA288;
+  color: #8C6E54;
+}
+
+
+.container.admin-grid {
+  margin-top: 100px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  transition: all 0.3s ease;
+}
+
+
+@media (min-width: 1000px) {
+  .container.admin-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+
+.card.admin-card {
+  background: #BFA288;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.card.admin-card.hidden {
+  opacity: 0;
+  transform: translateY(15px);
+  pointer-events: none;
+}
+
+.card.admin-card h2 {
+  color: #402B1F;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.card.admin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px rgba(240, 74, 74, 0.25);
+}
+
+
+.tabs {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tabs .btn {
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tabs .btn.primary {
+  background: #402B1F;
+  color: #BFA288;
+}
+
+.tabs .btn.outline {
+  border: 1px solid #402B1F;
+  color: #402B1F;
+  background: transparent;
+}
+
+.tabs .btn:hover {
+  background: #402B1F;
+  color: #fff;
+}
+
+
+.field {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  color: #402B1F;
+  font-size: 0.9rem;
+}
+
+input, select, textarea {
+  background: #D9CCC5;
+  color: #402B1F;
+  border: 1px solid #402B1F;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #402B1F;
+  outline: none;
+}
+
+
+.field-inline {
+  display: flex;
+  gap: 10px;
+}
+
+
+.btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn.primary {
+  background: #402B1F;
+  color: #d9c5ac;
+}
+
+.btn.primary:hover {
+  background: #d9c5ac;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid #402B1F;
+  color: #402B1F;
+}
+
+.btn.outline:hover {
+  background: #D9CCC5;
+  color: #BFA288;
+}
+
+.btn.small {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: #402B1F;
+  color: #d9c5ac;
+  font-family: "Merriweather", serif;
+}
+
+
+#listaProdutos {
+  background: #d9c5ac;
+  color: #402B1F;
+  border-radius: 8px;
+  padding: 15px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+#listaProdutos::-webkit-scrollbar {
+  width: 6px;
+}
+
+#listaProdutos::-webkit-scrollbar-thumb {
+  background-color: #402B1F;
+  border-radius: 10px;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-card {
+  animation: fadeIn 0.4s ease;
+}
+
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">Cantina - ADM</div>
+    <nav>
+      <a href="index.html" class="btn">Voltar ao Site</a>
+    </nav>
+  </header>
+
+  <main class="container admin-grid">
+    <div class="tabs" style="margin-bottom:20px;">
+      <button id="tabProdutos" class="btn primary">Produtos</button>
+      <button id="tabMarmitas" class="btn outline">Marmitas</button>
+    </div>
+
+    
+    <section id="secProdutos" class="card admin-card">
+      <h2>Adicionar / Editar Produto</h2>
+      <form id="formProduto">
+        <input type="hidden" id="produtoId" />
+        <div class="field">
+          <label>Nome</label>
+          <input id="nome" />
+        </div>
+        <div class="field">
+          <label>Categoria</label>
+          <select id="categoria">
+            <option value="salgados">Salgados</option>
+            <option value="produtos">Produtos</option>
+            <option value="refrigerantes">Bebidas</option>
+            <option value="combos">Combos</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Preço</label>
+          <input id="preco" type="number" step="0.01" min="0" />
+        </div>
+        <div class="field">
+          <label>Descrição</label>
+          <textarea id="descricao"></textarea>
+        </div>
+        <div class="field">
+          <label>Foto (URL ou upload)</label>
+          <input id="fotoUrl" placeholder="http(s) ou escolha um arquivo" />
+          <input id="fotoFile" type="file" accept="image/*" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Salvar Produto</button>
+          <button type="button" id="resetForm" class="btn outline">Limpar</button>
+        </div>
+      </form>
+    </section>
+
+    
+    <section id="secMarmitas" class="card admin-card" style="display:none;">
+      <h2>Adicionar / Editar Marmita</h2>
+      <form id="formMarmita">
+        <input type="hidden" id="marmitaId" />
+        <div class="field">
+          <label>Nome</label>
+          <input id="marmitaNome" />
+        </div>
+        <div class="field-inline">
+          <div class="field">
+            <label>Preço P</label>
+            <input id="marmitaPrecoP" type="number" step="0.01" min="0" />
+          </div>
+          <div class="field">
+            <label>Preço M</label>
+            <input id="marmitaPrecoM" type="number" step="0.01" min="0" />
+          </div>
+          <div class="field">
+            <label>Preço G</label>
+            <input id="marmitaPrecoG" type="number" step="0.01" min="0" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Descrição</label>
+          <textarea id="marmitaDesc"></textarea>
+        </div>
+        <div class="field">
+          <label>Foto (URL ou upload)</label>
+          <input id="marmitaFotoUrl" placeholder="http(s) ou escolha um arquivo" />
+          <input id="marmitaFotoFile" type="file" accept="image/*" />
+        </div>
+        <div class="marmita-lists">
+          <div>
+            <label>Carboidratos (apenas 1 permitido)</label>
+            <div id="marmitaListaCarbos"></div>
+            <input id="marmitaNovoCarbo" placeholder="Adicionar carbo" />
+            <button type="button" id="marmitaAddCarbo" class="btn small">Adicionar</button>
+          </div>
+          <div>
+            <label>Proteínas (ilimitadas)</label>
+            <div id="marmitaListaProteinas"></div>
+            <input id="marmitaNovoProteina" placeholder="Adicionar proteína" />
+            <button type="button" id="marmitaAddProteina" class="btn small">Adicionar</button>
+          </div>
+          <div>
+            <label>Saladas (ilimitadas)</label>
+            <div id="marmitaListaSaladas"></div>
+            <input id="marmitaNovoSalada" placeholder="Adicionar salada" />
+            <button type="button" id="marmitaAddSalada" class="btn small">Adicionar</button>
+          </div>
+          <div>
+            <label>Adicionais (ilimitados)</label>
+            <div id="marmitaListaAdicionais"></div>
+            <input id="marmitaNovoAdicional" placeholder="Adicionar adicional" />
+            <button type="button" id="marmitaAddAdicional" class="btn small">Adicionar</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Salvar Marmita</button>
+          <button type="button" id="resetFormMarmita" class="btn outline">Limpar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card admin-card">
+      <h2>Produtos Cadastrados</h2>
+      <div id="listaProdutos"></div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
