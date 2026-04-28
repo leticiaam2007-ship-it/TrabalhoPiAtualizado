@@ -28,7 +28,7 @@ mysqli_stmt_bind_param($stmt, "sss", $val1, $val2, $val3);
 
 
 $val1 = $nome;
-$val2 =$email ;
+$val2 = $email;
 $val3 = $senha;
 
 /* Executa a instrução */

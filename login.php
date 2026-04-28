@@ -22,6 +22,39 @@
   <header class="topbar"><div class="logo">Cantina</div></header>
 
   <?php
+ include("config.php");
+
+ $conexao = obterConexao();
+
+ $email = $_POST['email'] ?? null;
+ $senha = $_POST['senha'] ?? null;
+ if(isset($email) && isset($senha))
+ {
+   $stmt = mysqli_prepare($conexao, "SELECT * FROM usuarios where email = ?");
+   mysqli_stmt_bind_param($stmt, "s", $email);
+   try {
+      $exec = mysqli_stmt_execute($stmt);
+      if ( $exec == true){
+        $result = mysqli_stmt_get_result($stmt);
+        echo "<br><br><br>";
+        // 4. Buscar os dados
+        while ($row = mysqli_fetch_assoc($result)) {
+            if($row['senha'] ==  $senha){
+              return header("Location: index.html");
+            }
+        }
+        return header("Location: login.php?erro=4");
+      }else{
+        return header("Location: login.php?erro=4");
+      }
+    } catch (\Throwable $th) {
+       // var_dump($th);
+       return header("Location: login.php?erro=7");
+    }
+ }
+ 
+
+
 $mensagem=null;
 if(isset($_GET['erro'])){
   if($_GET['erro']==4){
@@ -42,10 +75,10 @@ $mensagem = "Cadastro realizado";
         <button id="btnShowRegister" class="btn outline">Registrar</button>
       </div>
 
-      <form id="loginForm" style>
+      <form id="loginForm" method="post" action="/cantina/login.php">
         <h2>Entrar</h2>
-        <div class="field"><label>Email</label><input id="loginEmail" type="email" required /></div>
-        <div class="field"><label>Senha</label><input id="loginSenha" type="password" required /></div>
+        <div class="field"><label>Email</label><input id="loginEmail" name="email" type="email" required /></div>
+        <div class="field"><label>Senha</label><input id="loginSenha" name="senha" type="password" required /></div>
         <div style="display:flex;gap:8px;align-items:center">
           <button type="submit" class="btn primary">Entrar</button>
           <a href="index.html" class="btn outline" style="margin-left:auto">Voltar</a>
