@@ -1,3 +1,19 @@
+<?php
+
+  session_start();
+
+// Código de bloqueio de páginas protegidas
+// Verifica se NÃO está logado
+if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] != "admin") {
+  header('Location: login.php');
+  exit;
+}
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -237,7 +253,7 @@ input:focus, select:focus, textarea:focus {
   <header class="topbar">
     <div class="logo">Cantina - ADM</div>
     <nav>
-      <a href="index.html" class="btn">Voltar ao Site</a>
+      <a href="index.php" class="btn">Voltar ao Site</a>
     </nav>
   </header>
 
