@@ -1,14 +1,12 @@
-// ...existing code...
-
-
-
 async function loadProducts() {
-  // tenta buscar do servidor, se falhar usa localStorage
   try {
-    const res = await fetch('produtos/cantina');
+    // CORREÇÃO: Caminho correto para o seu controller PHP
+    const res = await fetch('../controllers/marmitaController.php');
     if (!res.ok) throw new Error('Falha ao buscar produtos');
+    
     const rows = await res.json();
-    // normaliza campos do banco MySQL para o formato usado pelo frontend
+    
+    // Normaliza campos do banco MySQL para o formato usado pelo frontend
     return rows.map(p => ({
       id: String(p.id),
       name: p.nome || p.name,
@@ -16,10 +14,11 @@ async function loadProducts() {
       price: Number(p.preco ?? p.price ?? 0),
       category: p.categoria || p.category || 'Geral',
       image: p.image || p.imagem || '',
-      isMarmita: !!p.isMarmita,
+      isMarmita: Boolean(p.is_marmita || p.isMarmita),
       marmitaConfig: p.marmitaConfig ? (typeof p.marmitaConfig === 'string' ? JSON.parse(p.marmitaConfig) : p.marmitaConfig) : null
     }));
   } catch (e) {
+    console.warn("Erro ao buscar do servidor, tentando localStorage:", e);
     try {
       return JSON.parse(localStorage.getItem('produtos') || '[]');
     } catch (_) {
@@ -31,6 +30,7 @@ async function loadProducts() {
 function saveCart(cart) {
   localStorage.setItem('carrinho', JSON.stringify(cart));
 }
+
 function loadCart() {
   try {
     return JSON.parse(localStorage.getItem('carrinho') || '[]');
@@ -39,6 +39,7 @@ function loadCart() {
   }
 }
 
+// Elementos do DOM
 const produtosEl = document.getElementById('produtos');
 const carrinhoEl = document.getElementById('carrinho');
 const itensCarrinhoEl = document.getElementById('itensCarrinho');
@@ -59,8 +60,9 @@ async function renderProdutos() {
 
   const categorias = {};
   produtos.forEach(p => {
-    if (!categorias[p.category]) categorias[p.category] = [];
-    categorias[p.category].push(p);
+    const cat = p.category || 'Geral';
+    if (!categorias[cat]) categorias[cat] = [];
+    categorias[cat].push(p);
   });
 
   Object.keys(categorias).forEach(cat => {
@@ -92,6 +94,7 @@ async function renderProdutos() {
   });
 }
 
+// Evento de clique para adicionar ao carrinho ou ir para marmita
 produtosEl && produtosEl.addEventListener('click', (e) => {
   const btn = e.target.closest('button[data-id]');
   if (!btn) return;
@@ -118,14 +121,11 @@ function renderCarrinho() {
           <b>Tam:</b> ${escapeHtml(item.tamanho || '-') }<br>
           <b>Carbo:</b> ${escapeHtml(item.carbo || '-') }<br>
           <b>Proteínas:</b> ${(item.proteinas || []).map(escapeHtml).join(', ') || '-'}<br>
-          <b>Saladas:</b> ${(item.saladas || []).map(escapeHtml).join(', ') || '-'}<br>
-          <b>Adicionais:</b> ${(item.adicionais || []).map(escapeHtml).join(', ') || '-'}
         </div>`
       : '';
     const itemHtml = document.createElement('div');
     itemHtml.className = 'cart-item';
     itemHtml.innerHTML = `
-      <img src="${item.image || 'https://via.placeholder.com/60x60'}" alt="">
       <div style="flex:1">
         <div style="font-weight:600">${escapeHtml(item.name)}</div>
         ${desc}
@@ -139,18 +139,17 @@ function renderCarrinho() {
   });
 
   totalEl.textContent = total.toFixed(2);
-  contadorEl && (contadorEl.textContent = carrinho.reduce((s, i) => s + i.quantidade, 0));
+  if (contadorEl) contadorEl.textContent = carrinho.reduce((s, i) => s + i.quantidade, 0);
 }
 
+// Remover item do carrinho
 itensCarrinhoEl && itensCarrinhoEl.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-remove]');
   if (!btn) return;
   const idx = Number(btn.getAttribute('data-remove'));
-  if (Number.isInteger(idx)) {
-    carrinho.splice(idx, 1);
-    saveCart(carrinho);
-    renderCarrinho();
-  }
+  carrinho.splice(idx, 1);
+  saveCart(carrinho);
+  renderCarrinho();
 });
 
 if (limparCarrinhoBtn) {
@@ -163,76 +162,69 @@ if (limparCarrinhoBtn) {
   };
 }
 
+// FINALIZAR PEDIDO - Conexão com o Banco de Dados
 if (finalizarBtn) {
   finalizarBtn.onclick = async () => {
     carrinho = loadCart();
     if (carrinho.length === 0) return alert('Carrinho vazio!');
-    // monta payload simples para /api/pedidos
+
     const itensApi = carrinho.map(it => ({
       id_produto: Number(it.id),
       quantidade: it.quantidade,
       preco_unitario: Number(it.price ?? it.valor ?? 0)
     }));
+
     const valor_total = itensApi.reduce((s, it) => s + it.quantidade * it.preco_unitario, 0);
+
     try {
-      const res = await fetch('/api/pedidos', {
+      // CORREÇÃO: Envia para o Controller PHP real
+      const res = await fetch('../controllers/marmitaController.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_usuario: null, itens: itensApi, valor_total })
+        body: JSON.stringify({ 
+            id_usuario: 1, // NÃO ENVIE NULL. Use um ID de usuário válido (1).
+            itens: itensApi, 
+            valor_total 
+        })
       });
-      if (!res.ok) throw new Error('Falha ao enviar pedido');
-      alert('Pedido finalizado com sucesso!');
-      carrinho = [];
-      saveCart(carrinho);
-      renderCarrinho();
+
+      const data = await res.json();
+      
+      if (data.success) {
+        alert('Pedido finalizado com sucesso no banco de dados!');
+        carrinho = [];
+        saveCart(carrinho);
+        renderCarrinho();
+        if (carrinhoEl) carrinhoEl.classList.remove('open');
+      } else {
+        alert('Erro ao salvar pedido: ' + data.message);
+      }
     } catch (err) {
       console.error(err);
-      alert('Erro ao finalizar pedido. Tente novamente.');
+      alert('Erro de conexão com o servidor. Verifique o XAMPP.');
     }
   };
 }
 
+// Funções de abrir/fechar interface
 abrirCarrinhoBtn && (abrirCarrinhoBtn.onclick = () => carrinhoEl && carrinhoEl.classList.add('open'));
 fecharCarrinhoBtn && (fecharCarrinhoBtn.onclick = () => carrinhoEl && carrinhoEl.classList.remove('open'));
 
 function addToCart(produto) {
   carrinho = loadCart();
-  if (produto.isMarmita) {
-    const idx = carrinho.findIndex(item =>
-      item.isMarmita &&
-      item.id === produto.id &&
-      item.tamanho === produto.tamanho &&
-      item.carbo === produto.carbo &&
-      JSON.stringify(item.proteinas || []) === JSON.stringify(produto.proteinas || []) &&
-      JSON.stringify(item.saladas || []) === JSON.stringify(produto.saladas || []) &&
-      JSON.stringify(item.adicionais || []) === JSON.stringify(produto.adicionais || [])
-    );
-    if (idx >= 0) {
-      carrinho[idx].quantidade += produto.quantidade;
-    } else {
-      carrinho.push({ ...produto });
-    }
+  const idx = carrinho.findIndex(item => item.id === produto.id && item.isMarmita === produto.isMarmita);
+  
+  if (idx >= 0) {
+    carrinho[idx].quantidade += 1;
   } else {
-    const idx = carrinho.findIndex(item => !item.isMarmita && item.id === produto.id);
-    if (idx >= 0) {
-      carrinho[idx].quantidade += produto.quantidade;
-    } else {
-      carrinho.push({ ...produto });
-    }
+    carrinho.push({ ...produto });
   }
+  
   saveCart(carrinho);
   renderCarrinho();
+  alert('Adicionado ao carrinho!');
 }
 
-window.addEventListener('produtosAtualizados', async () => {
-  await renderProdutos();
-});
-window.addEventListener('DOMContentLoaded', async () => {
-  await renderProdutos();
-  renderCarrinho();
-});
-
-// simples escape para inserir texto no HTML
 function escapeHtml(s) {
   if (s == null) return '';
   return String(s)
@@ -242,3 +234,8 @@ function escapeHtml(s) {
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 }
+
+window.addEventListener('DOMContentLoaded', async () => {
+  await renderProdutos();
+  renderCarrinho();
+});

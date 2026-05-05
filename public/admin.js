@@ -203,13 +203,10 @@ formMarmita.addEventListener('submit', async (e) => {
   };
 
   
-  const list = loadProducts();
-  const idx = list.findIndex(p => p.id === id);
-  if(idx >= 0){
-    list[idx] = produto;
-  } else {
-    list.push(produto);
-  }
+async function loadProducts() {
+   const response = await fetch('../model/listar_produtos.php');
+   return await response.json();
+}
   saveProducts(list);
   resetFormMarmita();
   renderListaProdutos();
