@@ -104,7 +104,7 @@
           if ($row['senha'] == $senha) {
             $_SESSION['email'] = $row['email'];
             $_SESSION['usuario_id'] = $row['id'];
-            $_SESSION['usuario_tipo'] = $row['tipo'];
+            $_SESSION['tipo'] = $row['tipo'];
             return header("Location: index.php");
           }
         }

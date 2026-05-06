@@ -34,12 +34,11 @@ if (isset($_SESSION["email"])) {
     <div class="logo">Cantina</div>
     <nav>
 
-     <?php
-      if ($_SESSION['tipo'] !== 'admin') {
-        echo '';
-      } else {
+      <?php
+      if (isset($_SESSION['tipo']) && $_SESSION['tipo'] === 'admin') {
         echo '<a href="admin.php" class="btn link-admin">Painel ADM</a>';
       }
+      else{ echo'';   }
       ?>
       <?php
       if (isset($logado)) {

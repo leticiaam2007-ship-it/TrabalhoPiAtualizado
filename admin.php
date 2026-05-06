@@ -4,7 +4,7 @@
 
 // Código de bloqueio de páginas protegidas
 // Verifica se NÃO está logado
-if (!isset($_SESSION['usuario_tipo']) || $_SESSION['usuario_tipo'] != "admin") {
+if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] != "admin") {
   header('Location: login.php');
   exit;
 }
