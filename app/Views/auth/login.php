@@ -164,7 +164,7 @@
           <button id="regCancelar" type="button" class="btn outline" style="margin-left:auto">Cancelar</button>
         </div>
         <div id="regMsg" class="note"></div>
-        <div class="small-note">Ao registrar, voce ja podera entrar com seu email e senha.</div>
+        <div class="small-note">Ao registrar, você já podera entrar com seu email e senha.</div>
       </form>
     </div>
   </main>

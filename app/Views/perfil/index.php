@@ -104,7 +104,7 @@
             </div>
 
             <div class="form-acoes">
-              <button type="submit" class="btn-principal">Gravar Alteracões</button>
+              <button type="submit" class="btn-principal">Gravar Alterações</button>
             </div>
           </form>
         </div>
@@ -142,7 +142,7 @@
                   <img src="<?php echo htmlspecialchars($foto, ENT_QUOTES, 'UTF-8'); ?>" alt="Foto de perfil" />
                 <?php endif; ?>
               </div>
-              <p>Envie uma imagem JPG, PNG ou WEBP de ate 3MB.</p>
+              <p>Envie uma imagem JPG, PNG ou WEBP de até 3MB.</p>
             </div>
 
             <label class="upload-field">
@@ -173,7 +173,7 @@
                   <strong><?php echo htmlspecialchars((string) ($pedido['produto'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></strong>
                   <span><?php echo htmlspecialchars((string) ($pedido['descricao'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></span>
                   <span><?php echo htmlspecialchars((string) ($pedido['status'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></span>
-                  <span>Pagamento: <?php echo htmlspecialchars((string) ($pedido['forma_pagamento'] ?? 'Nao informado'), ENT_QUOTES, 'UTF-8'); ?></span>
+                  <span>Pagamento: <?php echo htmlspecialchars((string) ($pedido['forma_pagamento'] ?? 'Não informado'), ENT_QUOTES, 'UTF-8'); ?></span>
                   <span><?php echo htmlspecialchars((string) ($pedido['data'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></span>
                   <span><?php echo htmlspecialchars((string) ($pedido['valor_total'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></span>
                 </div>

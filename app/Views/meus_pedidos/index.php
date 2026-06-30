@@ -379,7 +379,7 @@
       <button class="btn" data-filtro="entregues">Entregues</button>
       <button class="btn" data-filtro="cancelados">Cancelados</button>
       <button class="btn" data-filtro="pagos">Pagos</button>
-      <button class="btn" data-filtro="nao_pagos">Nao pagos</button>
+      <button class="btn" data-filtro="nao_pagos">Não pagos</button>
     </section>
 
     <section class="bloco">
@@ -388,7 +388,7 @@
     </section>
 
     <section class="bloco">
-      <h2>Historico de pedidos</h2>
+      <h2>Histórico de pedidos</h2>
       <div id="listaHistorico" class="lista-pedidos"></div>
     </section>
   </main>

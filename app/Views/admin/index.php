@@ -592,15 +592,15 @@ input:focus, select:focus, textarea:focus {
         </div>
         <div class="field-inline">
           <div class="field">
-            <label>Preco P</label>
+            <label>Preço P</label>
             <input id="marmitaPrecoP" type="number" step="0.01" min="0" />
           </div>
           <div class="field">
-            <label>Preco M</label>
+            <label>Preço M</label>
             <input id="marmitaPrecoM" type="number" step="0.01" min="0" />
           </div>
           <div class="field">
-            <label>Preco G</label>
+            <label>Preço G</label>
             <input id="marmitaPrecoG" type="number" step="0.01" min="0" />
           </div>
         </div>

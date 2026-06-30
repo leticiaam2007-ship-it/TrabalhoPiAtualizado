@@ -630,15 +630,15 @@
 
     <section class="report-shell">
       <div class="report-header">
-        <h2 class="report-title">Relatorio de vendas</h2>
+        <h2 class="report-title">Relatório de vendas</h2>
         <input type="month" id="reportMonth" />
       </div>
       <div id="reportBars" class="report-bars"></div>
       <section class="monthly-report">
         <div class="panel-heading">
           <div>
-            <h3 class="monthly-report-title">Valor vendido por mes</h3>
-            <p class="monthly-report-note">Total vendido em cada mes finalizado.</p>
+            <h3 class="monthly-report-title">Valor vendido por mês</h3>
+            <p class="monthly-report-note">Total vendido em cada mês finalizado.</p>
           </div>
         </div>
         <div id="monthlyRevenueBars" class="report-bars"></div>

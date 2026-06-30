@@ -114,7 +114,7 @@
         <a href="perfil.php" class="menu-item menu-item-link user-panel-link">Perfil</a>
         <a href="meus_pedidos.php" class="menu-item menu-item-link user-panel-link">Meus pedidos</a>
         <?php if (($tipoUsuario ?? null) === 'admin'): ?>
-          <a href="admin.php" class="menu-item menu-item-link user-panel-link">painel de admin</a>
+          <a href="admin.php" class="menu-item menu-item-link user-panel-link">Painel de admin</a>
         <?php endif; ?>
       <?php else: ?>
         <a href="login.php" class="menu-item menu-item-link user-panel-link">Login / Registrar</a>
@@ -127,7 +127,7 @@
       <div class="window">
         <div class="window-inner">
           <h1>Cardapio</h1>
-          <div class="subtitle">Nossas melhores opcoes</div>
+          <div class="subtitle">Nossas melhores opções</div>
         </div>
       </div>
     </section>
@@ -156,8 +156,8 @@
 <footer class="footer">
   <div class="footer-content">
     <div class="footer-section">
-      <h3>Sobre Nos</h3>
-      <p>Somos uma equipe dedicada a fornecer o melhor PI ja feito.</p>
+      <h3>Sobre Nós</h3>
+      <p>Somos uma equipe dedicada a fornecer o melhor PI já feito.</p>
     </div>
 
     <div class="footer-section">
@@ -174,6 +174,7 @@
       <div class="social-links">
         <a href="https://www.instagram.com/vitorv1e1ra/" target="_blank">Vieira</a>
         <a href="https://www.instagram.com/leticia.almeidamomo/" target="_blank">Lelet</a>
+        <a href="https://www.instagram.com/catarinycruz_/" target="_blank">Catariny</a>
       </div>
     </div>
   </div>

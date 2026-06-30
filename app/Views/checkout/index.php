@@ -208,7 +208,7 @@
           </label>
           <label class="payment-option">
             <input type="radio" name="pagamento" value="cartao" />
-            Cartao
+            Cartão
           </label>
           <label class="payment-option">
             <input type="radio" name="pagamento" value="pix" />
